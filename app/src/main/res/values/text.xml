@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bienvenida">Bienvenido</string>
+    <string name="btn_registro">Registrarse</string>
+    <string name="btn_usuarios">Usuarios</string>
+
+    <string name="usr_nombre">Nombre: </string>
+    <string name="usr_apellido">Apellido: </string>
+    <string name="usr_correo">Correo: </string>
+
+    <string name="btn_guardar">Guardar</string>
+    <string name="btn_actualizar">Actualizar</string>
+    <string name="btn_eliminar">Eliminar</string>
+    <string name="btn_regresar">Regresar</string>
+
+
+</resources>
