@@ -14,10 +14,20 @@ class MainActivity : AppCompatActivity() {
         button_registro.setOnClickListener {
             this.irActividadRegistro()
         }
+
+        button_usuarios.setOnClickListener {
+            this.irActividadUsuarios()
+        }
+
     }
 
     fun irActividadRegistro() {
         val intent = Intent(this, RegistroActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun irActividadUsuarios(){
+        val intent = Intent(this, UsuariosActivity::class.java)
         startActivity(intent)
     }
 

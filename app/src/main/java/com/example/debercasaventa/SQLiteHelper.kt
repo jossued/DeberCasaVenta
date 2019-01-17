@@ -4,13 +4,16 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.provider.ContactsContract
 import android.util.Log
 
 class SqliteHelper(context: Context?) :
-    SQLiteOpenHelper(context,
+    SQLiteOpenHelper(
+        context,
         "moviles", // Nombre de la base de datos
         null,
-        1) {
+        1
+    ) {
 
     override fun onCreate(baseDeDatos: SQLiteDatabase?) {
 
@@ -19,15 +22,18 @@ class SqliteHelper(context: Context?) :
                 "(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nombre VARCHAR(50)," +
-                "descripcion VARCHAR(50)" +
+                "apellido VARCHAR(50)," +
+                "email VARCHAR(30)" +
                 ")"
         Log.i("bdd", "Creando la tabla de usuario \n$crearTablaUsuario")
         baseDeDatos?.execSQL(crearTablaUsuario)
     }
 
-    override fun onUpgrade(baseDeDatos: SQLiteDatabase?,
-                           antiguaVersion: Int,
-                           nuevaVersion: Int) {
+    override fun onUpgrade(
+        baseDeDatos: SQLiteDatabase?,
+        antiguaVersion: Int,
+        nuevaVersion: Int
+    ) {
 
     }
 
@@ -39,12 +45,13 @@ class SqliteHelper(context: Context?) :
 
         val resultado = dbReadable.rawQuery(statement, null)
 
-        val respuestaUsuario = RespuestaUsuarioGuardado(null, null)
+        val respuestaUsuario = RespuestaUsuarioGuardado(null, null, null)
 
         if (resultado.moveToFirst()) {
             do {
                 respuestaUsuario.nombre = resultado.getString(1)
-                respuestaUsuario.descripcion = resultado.getString(2)
+                respuestaUsuario.apellido = resultado.getString(2)
+                respuestaUsuario.email = resultado.getString(3)
             } while (resultado.moveToNext())
         }
 
@@ -55,21 +62,51 @@ class SqliteHelper(context: Context?) :
         return respuestaUsuario
     }
 
-    fun crearUsuarioFormulario(nombre: String,
-                               descripcion: String): Boolean {
+    fun todosUsuarios(): ArrayList<Usuario>{
+        val respuestaUsuario = ArrayList<Usuario>()
+        val statement = "select * from usuario"
+
+        val dbReadable = readableDatabase
+
+        val resultado = dbReadable.rawQuery(statement, null)
+
+        if (resultado.moveToFirst()) {
+            do {
+                val usuario = Usuario(
+                    resultado.getString(1),
+                    resultado.getString(2),
+                    resultado.getString(3)
+                )
+                respuestaUsuario.add(usuario)
+            } while (resultado.moveToNext())
+        }
+
+        resultado.close()
+
+        dbReadable.close()
+
+        return respuestaUsuario
+    }
+
+    fun crearUsuarioFormulario(
+        nombre: String,
+        apellido: String, email: String
+    ): Boolean {
         // Base de datos de escritura
         val dbWriteable = writableDatabase
         val cv = ContentValues()
 
         // Valores de los campos
         cv.put("nombre", nombre)
-        cv.put("descripcion", descripcion)
+        cv.put("apellido", apellido)
+        cv.put("email", email)
 
         val resultado: Long = dbWriteable
             .insert(
                 "usuario", // Nombre de la tabla
                 null,
-                cv)
+                cv
+            )
 
         dbWriteable.close()
 
@@ -77,8 +114,10 @@ class SqliteHelper(context: Context?) :
 
     }
 
-    fun actualizarUsuarioFormulario(nombre: String,
-                                    descripcion: String): Boolean {
+    fun actualizarUsuarioFormulario(
+        nombre: String,
+        descripcion: String
+    ): Boolean {
         // Base de datos de escritura
         val dbWriteable = writableDatabase
         val cv = ContentValues()

@@ -12,6 +12,7 @@
     <string name="btn_actualizar">Actualizar</string>
     <string name="btn_eliminar">Eliminar</string>
     <string name="btn_regresar">Regresar</string>
+    <string name="btn_ver">Ver</string>
 
 
 </resources>
