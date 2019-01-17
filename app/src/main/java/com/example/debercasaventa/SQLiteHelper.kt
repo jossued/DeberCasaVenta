@@ -73,6 +73,7 @@ class SqliteHelper(context: Context?) :
         if (resultado.moveToFirst()) {
             do {
                 val usuario = Usuario(
+                    resultado.getInt(0),
                     resultado.getString(1),
                     resultado.getString(2),
                     resultado.getString(3)
@@ -115,8 +116,10 @@ class SqliteHelper(context: Context?) :
     }
 
     fun actualizarUsuarioFormulario(
+        id:Int,
         nombre: String,
-        descripcion: String
+        apellido: String,
+        email: String
     ): Boolean {
         // Base de datos de escritura
         val dbWriteable = writableDatabase
@@ -125,14 +128,15 @@ class SqliteHelper(context: Context?) :
         // Valores de los campos
 
         cv.put("nombre", nombre)
-        cv.put("descripcion", descripcion)
+        cv.put("apellido", apellido)
+        cv.put("email", email)
 
         val resultado = dbWriteable
             .update(
                 "usuario", // Nombre de la tabla
                 cv, // Valores a actualizarse
                 "id=?", // Where
-                arrayOf("1") // Parametros
+                arrayOf("${id}") // Parametros
             )
 
         dbWriteable.close()
@@ -141,12 +145,12 @@ class SqliteHelper(context: Context?) :
 
     }
 
-    fun eliminarUsuarioFormulario(): Boolean {
+    fun eliminarUsuarioFormulario(id:Int): Boolean {
         val dbWriteable = writableDatabase
 
         val nombreTabla = "usuario"
         val clausulaWhere = "id = ?"
-        val parametros = arrayOf("1")
+        val parametros = arrayOf("${id}")
         val respuesta = dbWriteable.delete(
             nombreTabla,
             clausulaWhere,

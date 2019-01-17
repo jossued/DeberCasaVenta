@@ -1,7 +1,9 @@
 package com.example.debercasaventa
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -26,12 +28,13 @@ class UsuariosActivity : AppCompatActivity() {
         val usuarios = helper.todosUsuarios()
 
 //        BDD.leerBase(usuarios)
+        val intentEditar = Intent(this, EditarUsuarioActivity::class.java)
 
         val layoutManager = LinearLayoutManager(this)
         val rv = rview_usuarios
 
         for (usuario in usuarios){Log.i("bdd", usuario.nombre)}
-        val adaptador = PersonasAdaptador(usuarios)
+        val adaptador = PersonasAdaptador(usuarios, this, intentEditar)
 
         rview_usuarios.layoutManager = layoutManager
         rview_usuarios.itemAnimator = DefaultItemAnimator()
@@ -42,20 +45,41 @@ class UsuariosActivity : AppCompatActivity() {
 
 }
 
-class PersonasAdaptador(private val listaPersonas: List<Usuario>) :
+class PersonasAdaptador(private val listaPersonas: List<Usuario>, private val contexto: UsuariosActivity, intent: Intent) :
     RecyclerView.Adapter<PersonasAdaptador.MyViewHolder>() {
 
+
+    val intentEditar = intent
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var nombreTextView: TextView
         var apellidoTextView: TextView
 
+
         init {
             nombreTextView = view.findViewById(R.id.textView_nombre) as TextView
             apellidoTextView = view.findViewById(R.id.textView_apellido) as TextView
 
+            val boton = view.findViewById(R.id.button_ver_usuario) as Button
+
+            boton
+                .setOnClickListener {
+                    val usuario = listaPersonas[position]
+                    Log.i("paso", "${usuario.nombre}, ${usuario.apellido}, ${usuario.email}, ${usuario.id}")
+                    intentEditar.putExtra("id_usuario",usuario.id)
+                    contexto.startActivity(intentEditar)
+
+                }
+
+
         }
+
+
     }
+
+
+
+
 
     // Definimos el layout
     override fun onCreateViewHolder(
@@ -79,6 +103,15 @@ class PersonasAdaptador(private val listaPersonas: List<Usuario>) :
 
         holder.nombreTextView.setText(persona.nombre)
         holder.apellidoTextView.setText(persona.apellido)
+
+        /*
+        holder.itemView.setOnClickListener {
+            @Override
+            public void onClick(View view) {
+                startActivity
+            }
+        }
+        */
     }
 
     override fun getItemCount(): Int {
@@ -87,18 +120,3 @@ class PersonasAdaptador(private val listaPersonas: List<Usuario>) :
 
 }
 
-class BDD {
-    companion object {
-        var usuarios = ArrayList<Usuario>()
-
-        fun crearMas() {
-            usuarios.add(Usuario("Juan", "353331223", "s"))
-            usuarios.add(Usuario("Adrian", "12312312", "sa"))
-            usuarios.add(Usuario("Vicente", "98734833", "saf"))
-        }
-
-        fun leerbase(usuario: ArrayList<Usuario>){
-            var usuarios = usuario
-        }
-    }
-}

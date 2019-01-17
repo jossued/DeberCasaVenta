@@ -3,8 +3,9 @@ package com.example.debercasaventa
 import android.os.Parcel
 import android.os.Parcelable
 
-class Inmueble (var ciudad:String, var direccion:String, var m2: Int, var numDomitorios: Int, var publicacion: Publicacion):Parcelable{
+class Inmueble (var id:Int, var ciudad:String, var direccion:String, var m2: Int, var numDomitorios: Int, var publicacion: Publicacion):Parcelable{
     constructor(parcel: Parcel) : this(
+        parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
         parcel.readInt(),

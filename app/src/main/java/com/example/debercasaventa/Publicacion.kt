@@ -4,8 +4,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.*
 
-class Publicacion (var tipo: String, var titulo: String, var fecha:Date, var precio:Double, var usuario: Usuario):Parcelable{
+class Publicacion (var id:Int, var tipo: String, var titulo: String, var fecha:Date, var precio:Double, var usuario: Usuario):Parcelable{
     constructor(parcel: Parcel) : this(
+        parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
         parcel.readSerializable() as Date,
