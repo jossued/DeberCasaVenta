@@ -1,5 +1,6 @@
 package com.example.debercasaventa
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -42,10 +43,62 @@ class UsuariosActivity : AppCompatActivity() {
 
         adaptador.notifyDataSetChanged()
     }
+    /*
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (resultCode){
+            requestCodeActualizar -> {
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getIntExtra("id", -1)}")
+                        Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getStringExtra("textoNombre")}")
+                        Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getStringExtra("textoApellido")}")
+                        Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getStringExtra("textoEmail")}")
+
+                        actualizarUsuario(
+                            data!!.getIntExtra("id", -1), data!!.getStringExtra("textoNombre"),
+                            data!!.getStringExtra("textoApellido"), data!!.getStringExtra("textoEmail")
+                        )
+
+                    }
+
+                    RESULT_CANCELED -> {
+                        Log.i("error", "Error")
+                    }
+                }
+            }
+
+        }
+    }
+
+    fun actualizarUsuario(id: Int, textoNombre: String, textoApellido: String, textoEmail: String) {
+
+
+        val helper = SqliteHelper(applicationContext)
+
+//        val noExisteRegistroDeUsuario = helper.existeUsuarioFormulario().nombre == null
+
+
+        val seActualizo = helper
+            .actualizarUsuarioFormulario(
+                id,
+                textoNombre,
+                textoApellido,
+                textoEmail
+            )
+
+        Log.i("bdd", "Se actualizo ${seActualizo}")
+    }
+
+    companion object {
+        val requestCodeActualizar = 101
+    }
+    */
 
 }
 
-class PersonasAdaptador(private val listaPersonas: List<Usuario>, private val contexto: UsuariosActivity, intent: Intent) :
+class PersonasAdaptador(val listaPersonas: ArrayList<Usuario>, private val contexto: UsuariosActivity, intent: Intent) :
     RecyclerView.Adapter<PersonasAdaptador.MyViewHolder>() {
 
 
@@ -67,7 +120,13 @@ class PersonasAdaptador(private val listaPersonas: List<Usuario>, private val co
                     val usuario = listaPersonas[position]
                     Log.i("paso", "${usuario.nombre}, ${usuario.apellido}, ${usuario.email}, ${usuario.id}")
                     intentEditar.putExtra("id_usuario",usuario.id)
+
+                    val usuario_pasar = Usuario(usuario.id, usuario.nombre, usuario.apellido, usuario.email)
+                    intentEditar.putExtra("usuario_pasar",usuario_pasar)
                     contexto.startActivity(intentEditar)
+//                    contexto.startActivityForResult(intentEditar, requestCodeActualizar)
+                    contexto.finish()
+//                    contexto.recreate()
 
                 }
 
@@ -75,10 +134,9 @@ class PersonasAdaptador(private val listaPersonas: List<Usuario>, private val co
         }
 
 
+
+
     }
-
-
-
 
 
     // Definimos el layout
@@ -116,6 +174,9 @@ class PersonasAdaptador(private val listaPersonas: List<Usuario>, private val co
 
     override fun getItemCount(): Int {
         return listaPersonas.size
+    }
+    companion object {
+        val requestCodeActualizar = 101
     }
 
 }

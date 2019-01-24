@@ -25,6 +25,18 @@ class SqliteHelper(context: Context?) :
                 "apellido VARCHAR(50)," +
                 "email VARCHAR(30)" +
                 ")"
+        val crearTablaPublicacion = "CREATE TABLE " +
+                "publicacion " +
+                "(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "titulo VARCHAR(50)," +
+                "costo DECIMAL(10,2)," +
+                "fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL," +
+                "id_usuario INTEGER,"+
+                "CONSTRAINT fk_publicaciones " +
+                "    FOREIGN KEY (id_usuario)" +
+                "    REFERENCES usuario(id)"
+                ")"
         Log.i("bdd", "Creando la tabla de usuario \n$crearTablaUsuario")
         baseDeDatos?.execSQL(crearTablaUsuario)
     }

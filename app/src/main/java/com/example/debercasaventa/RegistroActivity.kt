@@ -17,6 +17,7 @@ class RegistroActivity : AppCompatActivity() {
 
         button_guardar_usuario.setOnClickListener {
             guardarUsuario()
+            this.finish()
         }
 
         val texto: String? = intent.getStringExtra(Intent.EXTRA_TEXT)
@@ -25,6 +26,7 @@ class RegistroActivity : AppCompatActivity() {
         if(texto != null){
             editText_email_usuario.setText(texto)
         }
+
 
 
     }
