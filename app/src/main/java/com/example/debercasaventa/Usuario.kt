@@ -3,16 +3,18 @@ package com.example.debercasaventa
 import android.os.Parcel
 import android.os.Parcelable
 
+
 class Usuario(var id:Int, var nombre: String, var apellido: String, var email: String):Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
-        parcel.readString()?:"",
-        parcel.readString()?:"",
-        parcel.readString()?:""
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
         parcel.writeString(nombre)
         parcel.writeString(apellido)
         parcel.writeString(email)
@@ -31,5 +33,6 @@ class Usuario(var id:Int, var nombre: String, var apellido: String, var email: S
             return arrayOfNulls(size)
         }
     }
+
 
 }

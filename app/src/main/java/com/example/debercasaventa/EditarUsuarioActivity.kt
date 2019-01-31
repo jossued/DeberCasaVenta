@@ -24,9 +24,11 @@ class EditarUsuarioActivity : AppCompatActivity() {
 */
         val id = intent.getIntExtra("id_usuario", 1)
 
+        Log.i("int", "$id")
+
         val usuario = intent.getParcelableExtra<Usuario?>("usuario_pasar")
 
-        if (usuario!=null){
+        if (usuario != null) {
             Log.i("intent-editar", usuario.nombre)
             mostrarDatos(usuario)
         }
@@ -38,10 +40,10 @@ class EditarUsuarioActivity : AppCompatActivity() {
         }
 
         button_actualizar_usuario.setOnClickListener {
-//            this.devolverActualizar(id)
-            this.actualizarUsuario(id)
-            this.irAActividadUsuarios()
-            this.finish()
+            this.devolverActualizar(id)
+            // this.actualizarUsuario(id)
+            // this.irAActividadUsuarios()
+            // this.finish()
         }
 
         button_eliminar_usuario.setOnClickListener {
@@ -58,7 +60,7 @@ class EditarUsuarioActivity : AppCompatActivity() {
     }
 
     fun devolverActualizar(id: Int) {
-        val id = id
+        //val id = id
         val textoNombre = actualizarText_usuario_nombre.text
         val textoApellido = actualizarText_usuario_apellido.text
         val textoEmail = actualizarText_usuario_email.text
@@ -66,9 +68,9 @@ class EditarUsuarioActivity : AppCompatActivity() {
         val intentRespuesta = Intent()
 
         intentRespuesta.putExtra("id", id)
-        intentRespuesta.putExtra("textoNombre", textoNombre)
-        intentRespuesta.putExtra("textoApellido", textoApellido)
-        intentRespuesta.putExtra("textoEmail", textoEmail)
+        intentRespuesta.putExtra("textoNombre", textoNombre.toString())
+        intentRespuesta.putExtra("textoApellido", textoApellido.toString())
+        intentRespuesta.putExtra("textoEmail", textoEmail.toString())
 
         this.setResult(
             Activity.RESULT_OK,

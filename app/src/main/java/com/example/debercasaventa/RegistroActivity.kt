@@ -15,6 +15,12 @@ class RegistroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
 
+        val usuario = intent.getParcelableExtra<Usuario?>("usuario_pasar")
+
+        if (usuario != null) {
+            Log.i("intent-usuario", usuario.nombre)
+        }
+
         button_guardar_usuario.setOnClickListener {
             guardarUsuario()
             this.finish()

@@ -31,10 +31,13 @@ class UsuariosActivity : AppCompatActivity() {
 //        BDD.leerBase(usuarios)
         val intentEditar = Intent(this, EditarUsuarioActivity::class.java)
 
+
         val layoutManager = LinearLayoutManager(this)
         val rv = rview_usuarios
 
-        for (usuario in usuarios){Log.i("bdd", usuario.nombre)}
+        for (usuario in usuarios) {
+            Log.i("bdd", usuario.nombre)
+        }
         val adaptador = PersonasAdaptador(usuarios, this, intentEditar)
 
         rview_usuarios.layoutManager = layoutManager
@@ -43,33 +46,37 @@ class UsuariosActivity : AppCompatActivity() {
 
         adaptador.notifyDataSetChanged()
     }
-    /*
+
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Log.i("int", "$resultCode")
 
-        when (resultCode){
-            requestCodeActualizar -> {
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getIntExtra("id", -1)}")
-                        Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getStringExtra("textoNombre")}")
-                        Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getStringExtra("textoApellido")}")
-                        Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getStringExtra("textoEmail")}")
+        when (resultCode) {
+            Activity.RESULT_OK -> {
 
-                        actualizarUsuario(
-                            data!!.getIntExtra("id", -1), data!!.getStringExtra("textoNombre"),
-                            data!!.getStringExtra("textoApellido"), data!!.getStringExtra("textoEmail")
-                        )
+                Log.i("int", "$requestCode")
+                Log.i("int", "$resultCode")
+                Log.i("int", "$data")
 
-                    }
 
-                    RESULT_CANCELED -> {
-                        Log.i("error", "Error")
-                    }
-                }
+                Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getIntExtra("id", -1)}")
+                Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getStringExtra("textoNombre")}")
+                Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getStringExtra("textoApellido")}")
+                Log.i("intent-nombre-apellido", "LLEGOOOO ${data!!.getStringExtra("textoEmail")}")
+
+                actualizarUsuario(
+                    data!!.getIntExtra("id", -1), data!!.getStringExtra("textoNombre"),
+                    data!!.getStringExtra("textoApellido"), data!!.getStringExtra("textoEmail")
+                )
+
+
             }
 
+            RESULT_CANCELED -> {
+                Log.i("error", "Error")
+            }
         }
+
     }
 
     fun actualizarUsuario(id: Int, textoNombre: String, textoApellido: String, textoEmail: String) {
@@ -94,7 +101,7 @@ class UsuariosActivity : AppCompatActivity() {
     companion object {
         val requestCodeActualizar = 101
     }
-    */
+
 
 }
 
@@ -102,7 +109,7 @@ class PersonasAdaptador(val listaPersonas: ArrayList<Usuario>, private val conte
     RecyclerView.Adapter<PersonasAdaptador.MyViewHolder>() {
 
 
-    val intentEditar = intent
+    // val intentEditar = intent
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var nombreTextView: TextView
@@ -118,14 +125,15 @@ class PersonasAdaptador(val listaPersonas: ArrayList<Usuario>, private val conte
             boton
                 .setOnClickListener {
                     val usuario = listaPersonas[position]
+                    val intentEditar = Intent(contexto, EditarUsuarioActivity::class.java)
                     Log.i("paso", "${usuario.nombre}, ${usuario.apellido}, ${usuario.email}, ${usuario.id}")
-                    intentEditar.putExtra("id_usuario",usuario.id)
+                    intentEditar.putExtra("id_usuario", usuario.id)
 
                     val usuario_pasar = Usuario(usuario.id, usuario.nombre, usuario.apellido, usuario.email)
                     intentEditar.putExtra("usuario_pasar",usuario_pasar)
-                    contexto.startActivity(intentEditar)
-//                    contexto.startActivityForResult(intentEditar, requestCodeActualizar)
-                    contexto.finish()
+                    // contexto.startActivity(intentEditar)
+                    contexto.startActivityForResult(intentEditar, UsuariosActivity.requestCodeActualizar)
+                    // contexto.finish()
 //                    contexto.recreate()
 
                 }
@@ -134,15 +142,14 @@ class PersonasAdaptador(val listaPersonas: ArrayList<Usuario>, private val conte
         }
 
 
-
-
     }
 
 
     // Definimos el layout
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int): MyViewHolder {
+        viewType: Int
+    ): MyViewHolder {
 
         val itemView = LayoutInflater
             .from(parent.context)
@@ -175,6 +182,7 @@ class PersonasAdaptador(val listaPersonas: ArrayList<Usuario>, private val conte
     override fun getItemCount(): Int {
         return listaPersonas.size
     }
+
     companion object {
         val requestCodeActualizar = 101
     }
