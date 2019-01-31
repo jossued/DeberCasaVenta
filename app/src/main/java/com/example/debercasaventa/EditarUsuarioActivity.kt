@@ -33,6 +33,7 @@ class EditarUsuarioActivity : AppCompatActivity() {
 
 
         button_regresar_usuario.setOnClickListener {
+            this.irAActividadUsuarios()
             this.finish()
         }
 
@@ -46,7 +47,7 @@ class EditarUsuarioActivity : AppCompatActivity() {
         button_eliminar_usuario.setOnClickListener {
             this.eliminarUsuario(id)
             this.irAActividadUsuarios()
-            //this.finish()
+            this.finish()
         }
 
     }

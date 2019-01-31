@@ -2,6 +2,7 @@
 <resources>
     <string name="bienvenida">Bienvenido</string>
     <string name="btn_registro">Registrarse</string>
+    <string name="btn_ingreso">Ingresar</string>
     <string name="btn_usuarios">Usuarios</string>
 
     <string name="usr_nombre">Nombre: </string>
